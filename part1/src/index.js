@@ -1,35 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Hello = (props) => {
-  return (
-    <div>
-      <p>
-        Hello {props.name}, you are {props.age} years old
-      </p>
-    </div>
-  )
-}
+const Contador = ({number}) => <h1>{number}</h1>
 
-const Footer = () => {
+const Button = ({handleClick,text}) => {
   return (
-    <div>
-      greeting app created by <a href="https://github.com/mluukkai">mluukkai</a>
-    </div>
+    <button onClick={handleClick}>
+      {text}
+    </button>
   )
 }
 
 const App = () => {
-  const name = 'Peter'
-  const age = 10
 
+  //Estado
+  const [contador,setContador] = useState(0);
+
+  //Metodos
+  const handleClickPlus = () =>{
+    setContador(contador+1)
+  }
+
+  const handleReset = () =>{
+    setContador(0)
+  }
+
+  //Variable dinamica
+  const isEven = contador%2 === 0
+
+  //Retorno
   return (
-    <>
-      <h1>Greetings</h1>
-      <Hello name="Maya" age={26 + 10} />
-      <Hello name={name} age={age} />
-      <Footer />
-    </>
+    <div>
+      <h1>Contador</h1>
+      <p>EL valor del contador es:</p>
+      <Contador number={contador}/>
+      <p>{isEven ? "Es Par": "Es Impar"}</p>
+      <Button handleClick={handleClickPlus} text={"Plus +"}/>
+      <Button handleClick={handleReset} text={"Reset to 0"}/>
+     
+    </div>
   )
 }
 
