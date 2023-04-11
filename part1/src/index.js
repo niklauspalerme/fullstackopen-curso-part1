@@ -1,43 +1,68 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Contador = ({number}) => <h1>{number}</h1>
 
-const Button = ({handleClick,text}) => {
+//Componente Condicional Hijo
+const History = ({allClicks}) => {
+  if (allClicks.length === 0) {
+    return (
+      <div>
+        the app is used by pressing the buttons
+      </div>
+    )
+  }
+
   return (
-    <button onClick={handleClick}>
-      {text}
-    </button>
+    <div>
+      <p>Clicks Totales: {allClicks.length}</p>
+      <p>button press history: {allClicks.join(' ')}</p>
+    </div>
   )
 }
 
+
+//Componente Padre
 const App = () => {
 
-  //Estado
-  const [contador,setContador] = useState(0);
+  //1) Estados tambien puede ser objettos
+  const [clicks, setClicks] = useState({
+    left: 0, right: 0
+  })
 
-  //Metodos
-  const handleClickPlus = () =>{
-    setContador(contador+1)
+  const [allClicks, setAll] = useState([])
+
+
+
+  //2) Funciones Aux
+  const handleLeftClick = () => {
+    const newClicks = { 
+      ...clicks, 
+      left: clicks.left + 1 
+    }
+    setClicks(newClicks);
+    setAll([...allClicks, "L"]); // Asi se modifica un state de []
+
   }
 
-  const handleReset = () =>{
-    setContador(0)
+  const handleRightClick = () => {
+    const newClicks = { 
+      ...clicks, 
+      right: clicks.right + 1 
+    }
+    setClicks(newClicks)
+    //Otra forma de modificar el estado del []
+    setAll( statePrevClick =>([...statePrevClick, 'R']))
+
   }
 
-  //Variable dinamica
-  const isEven = contador%2 === 0
-
-  //Retorno
+  //3) Retorno
   return (
     <div>
-      <h1>Contador</h1>
-      <p>EL valor del contador es:</p>
-      <Contador number={contador}/>
-      <p>{isEven ? "Es Par": "Es Impar"}</p>
-      <Button handleClick={handleClickPlus} text={"Plus +"}/>
-      <Button handleClick={handleReset} text={"Reset to 0"}/>
-     
+      {clicks.left}
+      <button onClick={handleLeftClick}>left</button>
+      <button onClick={handleRightClick}>right</button>
+      {clicks.right}
+      <History allClicks={allClicks} />
     </div>
   )
 }
